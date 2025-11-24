@@ -94,7 +94,7 @@ const STATUSES = {
 const StatusBadge = ({ status }) => {
   const config = STATUSES[status] || STATUSES.IDEA;
   return (
-    <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${config.color}`}>
+    <span className={`text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-full ${config.color}`}>
       {config.label}
     </span>
   );
@@ -527,29 +527,29 @@ export default function App() {
     const badgeColor = bizTheme.split(' ')[0].replace('text-', 'bg-').replace('-900', '-50'); // simple heuristic or just use config
 
     return (
-      <div 
+      <div
         key={post.id}
         onClick={(e) => { e.stopPropagation(); setEditingPost(post); }}
-        className={`group bg-white rounded border shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden ${isCompact ? 'p-1 mb-1 text-[10px]' : 'p-3 mb-3'}`}
+        className={`group bg-white rounded border shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden ${isCompact ? 'p-0.5 sm:p-1 mb-0.5 sm:mb-1 text-[10px] sm:text-xs' : 'p-3 mb-3'}`}
       >
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex items-start justify-between gap-1 sm:gap-2">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1 mb-1">
+            <div className="flex items-center gap-0.5 sm:gap-1 mb-0.5 sm:mb-1">
               {/* Business Icon Badge */}
-              <span title={bizConfig.label} className="text-xs mr-1">{bizConfig.icon}</span>
-              <TypeIcon className={`w-3 h-3 ${post.type === 'BLOG' ? 'text-blue-500' : 'text-green-500'}`} />
+              <span title={bizConfig.label} className={`${isCompact ? 'text-[10px]' : 'text-xs'} mr-0.5 sm:mr-1`}>{bizConfig.icon}</span>
+              <TypeIcon className={`${isCompact ? 'w-2.5 h-2.5 sm:w-3 sm:h-3' : 'w-3 h-3'} ${post.type === 'BLOG' ? 'text-blue-500' : 'text-green-500'}`} />
               {!isCompact && <StatusBadge status={post.status} />}
             </div>
-            <p className={`font-medium text-slate-800 truncate ${isCompact ? 'leading-tight' : ''}`}>
+            <p className={`font-medium text-slate-800 truncate leading-tight ${isCompact ? 'text-[10px] sm:text-xs' : ''}`}>
               {post.title || 'Untitled Idea'}
             </p>
           </div>
           {(post.imageUrl || post.externalLink) && (
-            <div className="w-8 h-8 rounded bg-slate-100 flex-shrink-0 overflow-hidden">
+            <div className={`${isCompact ? 'w-6 h-6 sm:w-8 sm:h-8' : 'w-8 h-8'} rounded bg-slate-100 flex-shrink-0 overflow-hidden`}>
                {post.imageUrl ? (
                  <img src={post.imageUrl} alt="" className="w-full h-full object-cover" />
                ) : (
-                 <ExternalLink className="w-4 h-4 m-2 text-slate-400" />
+                 <ExternalLink className={`${isCompact ? 'w-3 h-3 sm:w-4 sm:h-4' : 'w-4 h-4'} m-1 sm:m-2 text-slate-400`} />
                )}
             </div>
           )}
@@ -573,10 +573,11 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="bg-indigo-600 p-2 rounded-lg">
-              <Calendar className="w-5 h-5 text-white" />
+              <img src="/mm360-logo-standard.svg" alt="MM360 Logo" className="w-5 h-5" />
             </div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent hidden sm:block">
-              J-Marinez Content Calendar
+            <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent">
+              <span className="sm:hidden">Content Cal</span>
+              <span className="hidden sm:inline">J-Marinez Content Calendar</span>
             </h1>
           </div>
           
@@ -595,11 +596,11 @@ export default function App() {
                 <ListIcon className="w-4 h-4" />
               </button>
             </div>
-            <button 
+            <button
               onClick={() => setSelectedDate(new Date())}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center transition-colors shadow-sm"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center transition-colors shadow-sm"
             >
-              <Plus className="w-4 h-4 mr-2" /> New Idea
+              <Plus className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" /> <span className="hidden sm:inline">New Idea</span>
             </button>
           </div>
         </div>
@@ -636,9 +637,9 @@ export default function App() {
 
               <button
                 onClick={handleAddMonthlyBlog}
-                className="w-full sm:w-80 flex items-center justify-center gap-3 px-6 py-3 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-xl text-base font-bold transition-all shadow-sm hover:shadow-md"
+                className="w-full sm:w-80 flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 rounded-xl text-sm sm:text-base font-bold transition-all shadow-sm hover:shadow-md"
               >
-                <FileText className="w-5 h-5" />
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
                 Plan Monthly Blog
               </button>
             </div>
@@ -657,25 +658,25 @@ export default function App() {
                 const dayPosts = getPostsForDate(date);
 
                 return (
-                  <div 
-                    key={idx} 
+                  <div
+                    key={idx}
                     onClick={() => date && setSelectedDate(date)}
-                    className={`min-h-[120px] bg-white relative group transition-colors ${date ? 'hover:bg-indigo-50/30 cursor-pointer' : ''}`}
+                    className={`min-h-[85px] sm:min-h-[120px] bg-white relative group transition-colors ${date ? 'hover:bg-indigo-50/30 cursor-pointer' : ''}`}
                   >
                     {date && (
                       <>
-                        <div className={`p-2 flex justify-between items-start ${isToday ? 'bg-indigo-50/50' : ''}`}>
-                          <span className={`text-sm font-medium w-7 h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-indigo-600 text-white' : 'text-slate-700'}`}>
+                        <div className={`p-1 sm:p-2 flex justify-between items-start ${isToday ? 'bg-indigo-50/50' : ''}`}>
+                          <span className={`text-xs sm:text-sm font-medium w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center rounded-full ${isToday ? 'bg-indigo-600 text-white' : 'text-slate-700'}`}>
                             {date.getDate()}
                           </span>
-                          <button 
-                            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-indigo-100 rounded text-indigo-600 transition-opacity"
+                          <button
+                            className="opacity-0 group-hover:opacity-100 p-0.5 sm:p-1 hover:bg-indigo-100 rounded text-indigo-600 transition-opacity"
                             onClick={(e) => { e.stopPropagation(); setSelectedDate(date); }}
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                           </button>
                         </div>
-                        <div className="px-1 pb-1 space-y-1 overflow-y-auto max-h-[100px]">
+                        <div className="px-0.5 sm:px-1 pb-0.5 sm:pb-1 space-y-0.5 sm:space-y-1 overflow-y-auto max-h-[60px] sm:max-h-[100px]">
                           {dayPosts.map(post => renderPostCard(post, true))}
                         </div>
                       </>

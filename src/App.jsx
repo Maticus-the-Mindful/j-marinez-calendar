@@ -171,9 +171,9 @@ const PostModal = ({ isOpen, onClose, post, onSave, onDelete, date, initialType,
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div 
+      <div
         key={formData.business}
-        className={`${themeBgClass} rounded-xl shadow-2xl w-full max-w-2xl max-h-[95vh] overflow-y-auto`}
+        className={`${themeBgClass} rounded-xl shadow-2xl w-[95%] sm:w-full max-w-2xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto`}
       >
         <div className={`flex items-center justify-between p-6 border-b border-black/5 sticky top-0 ${themeBgClass} z-10`}>
           <h2 className="text-xl font-bold text-slate-800">

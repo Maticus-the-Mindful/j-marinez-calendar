@@ -621,18 +621,6 @@ export default function App() {
       </header>
 
       <main className="max-w-7xl mx-auto p-4 md:p-6">
-        {/* Stats / Quick Legend */}
-        <div className="mb-6 flex flex-wrap gap-4 items-center text-sm text-slate-600">
-          <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-full border shadow-sm">
-            <span>🤠 Howdy SL</span>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-full border shadow-sm">
-            <span>🦈 Pink Shark</span>
-          </div>
-          <div className="h-4 w-px bg-slate-300 mx-2 hidden sm:block"></div>
-          <span className="hidden sm:inline">Total Ideas: <strong>{posts.length}</strong></span>
-        </div>
-
         {viewMode === 'calendar' ? (
           <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
             {/* Calendar Controls */}

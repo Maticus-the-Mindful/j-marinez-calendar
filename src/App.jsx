@@ -100,7 +100,7 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-const PostModal = ({ isOpen, onClose, post, onSave, onDelete, date, initialType }) => {
+const PostModal = ({ isOpen, onClose, post, onSave, onDelete, date, initialType, showAllContentTypes }) => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -221,25 +221,34 @@ const PostModal = ({ isOpen, onClose, post, onSave, onDelete, date, initialType 
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Content Type</label>
-              <div className="flex gap-2">
-                {Object.keys(POST_TYPES).map(typeKey => {
-                  if (!post && !initialType && typeKey === 'BLOG') return null;
-                  return (
-                    <button
-                      key={typeKey}
-                      type="button"
-                      onClick={() => setFormData({...formData, type: typeKey})}
-                      className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border transition-all ${
-                        formData.type === typeKey 
-                          ? 'bg-white border-black/10 text-slate-900 shadow-sm font-bold' 
-                          : 'border-transparent text-slate-500 hover:bg-white/30'
-                      }`}
-                    >
-                      {POST_TYPES[typeKey].label}
-                    </button>
-                  );
-                })}
-              </div>
+              {initialType === 'BLOG' && !post ? (
+                // Scenario 1: Opened via "Plan Monthly Blog" - show static text
+                <div className="py-2 px-3 rounded-lg text-sm font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                  Monthly Blog
+                </div>
+              ) : (
+                // Scenarios 2 & 3: Show selector
+                <div className="flex gap-2">
+                  {Object.keys(POST_TYPES).map(typeKey => {
+                    // Hide BLOG option if: not editing, not showing all types, and not initially set to BLOG
+                    if (!post && !showAllContentTypes && !initialType && typeKey === 'BLOG') return null;
+                    return (
+                      <button
+                        key={typeKey}
+                        type="button"
+                        onClick={() => setFormData({...formData, type: typeKey})}
+                        className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border transition-all ${
+                          formData.type === typeKey
+                            ? 'bg-white border-black/10 text-slate-900 shadow-sm font-bold'
+                            : 'border-transparent text-slate-500 hover:bg-white/30'
+                        }`}
+                      >
+                        {POST_TYPES[typeKey].label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
@@ -402,6 +411,7 @@ export default function App() {
   const [viewMode, setViewMode] = useState('calendar'); // 'calendar' or 'list'
   const [loading, setLoading] = useState(true);
   const [initialPostType, setInitialPostType] = useState(null);
+  const [showAllContentTypes, setShowAllContentTypes] = useState(false);
 
   // --- Auth & Data Fetching ---
   useEffect(() => {
@@ -467,6 +477,7 @@ export default function App() {
       setEditingPost(null);
       setSelectedDate(null);
       setInitialPostType(null);
+      setShowAllContentTypes(false);
     } catch (err) {
       console.error("Error saving post:", err);
       alert("Failed to save. Check your connection.");
@@ -576,7 +587,7 @@ export default function App() {
               <img src="/mm360-logo-standard.svg" alt="MM360 Logo" className="w-5 h-5" />
             </div>
             <h1 className="text-base sm:text-xl font-bold bg-gradient-to-r from-indigo-700 to-purple-600 bg-clip-text text-transparent">
-              <span className="sm:hidden">Content Cal</span>
+              <span className="sm:hidden">Content Calendar</span>
               <span className="hidden sm:inline">J-Marinez Content Calendar</span>
             </h1>
           </div>
@@ -597,7 +608,10 @@ export default function App() {
               </button>
             </div>
             <button
-              onClick={() => setSelectedDate(new Date())}
+              onClick={() => {
+                setSelectedDate(new Date());
+                setShowAllContentTypes(true);
+              }}
               className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium flex items-center transition-colors shadow-sm"
             >
               <Plus className="w-3 h-3 sm:w-4 sm:h-4 sm:mr-2" /> <span className="hidden sm:inline">New Idea</span>
@@ -748,12 +762,13 @@ export default function App() {
         )}
 
         {/* Modals */}
-        <PostModal 
-          isOpen={!!selectedDate || !!editingPost} 
-          onClose={() => { setSelectedDate(null); setEditingPost(null); setInitialPostType(null); }}
+        <PostModal
+          isOpen={!!selectedDate || !!editingPost}
+          onClose={() => { setSelectedDate(null); setEditingPost(null); setInitialPostType(null); setShowAllContentTypes(false); }}
           post={editingPost}
           date={selectedDate}
           initialType={initialPostType}
+          showAllContentTypes={showAllContentTypes}
           onSave={handleSave}
           onDelete={handleDelete}
         />

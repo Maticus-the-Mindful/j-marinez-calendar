@@ -81,24 +81,7 @@ const BUSINESSES = {
   }
 };
 
-const STATUSES = {
-  IDEA: { label: 'Idea', color: 'bg-gray-100 text-gray-600' },
-  DRAFT: { label: 'Drafting', color: 'bg-yellow-100 text-yellow-700' },
-  REVIEW: { label: 'In Review', color: 'bg-purple-100 text-purple-700' },
-  APPROVED: { label: 'Approved', color: 'bg-emerald-100 text-emerald-700' },
-  PUBLISHED: { label: 'Published', color: 'bg-blue-600 text-white' }
-};
-
 // --- Components ---
-
-const StatusBadge = ({ status }) => {
-  const config = STATUSES[status] || STATUSES.IDEA;
-  return (
-    <span className={`text-[10px] sm:text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-full ${config.color}`}>
-      {config.label}
-    </span>
-  );
-};
 
 const PostModal = ({ isOpen, onClose, post, onSave, onDelete, date, initialType, showAllContentTypes }) => {
   const [formData, setFormData] = useState({
@@ -249,26 +232,6 @@ const PostModal = ({ isOpen, onClose, post, onSave, onDelete, date, initialType,
                   })}
                 </div>
               )}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(STATUSES).map(statusKey => (
-                <button
-                  key={statusKey}
-                  type="button"
-                  onClick={() => setFormData({...formData, status: statusKey})}
-                  className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
-                    formData.status === statusKey
-                      ? 'ring-2 ring-offset-1 ring-black/10 border-transparent shadow-sm'
-                      : 'border-transparent opacity-50 hover:opacity-100'
-                  } ${STATUSES[statusKey].color}`}
-                >
-                  {STATUSES[statusKey].label}
-                </button>
-              ))}
             </div>
           </div>
 
@@ -549,7 +512,6 @@ export default function App() {
               {/* Business Icon Badge */}
               <span title={bizConfig.label} className={`${isCompact ? 'text-[10px]' : 'text-xs'} mr-0.5 sm:mr-1`}>{bizConfig.icon}</span>
               <TypeIcon className={`${isCompact ? 'w-2.5 h-2.5 sm:w-3 sm:h-3' : 'w-3 h-3'} ${post.type === 'BLOG' ? 'text-blue-500' : 'text-green-500'}`} />
-              {!isCompact && <StatusBadge status={post.status} />}
             </div>
             <p className={`font-medium text-slate-800 truncate leading-tight ${isCompact ? 'text-[10px] sm:text-xs' : ''}`}>
               {post.title || 'Untitled Idea'}
@@ -727,7 +689,6 @@ export default function App() {
                        <span className={`text-xs font-bold px-2 py-1 rounded-full border ${badgeColor} ${bizTheme}`}>
                           {bizConfig.icon} {bizConfig.label}
                        </span>
-                       <StatusBadge status={post.status} />
                        <span className="text-xs text-slate-400 flex items-center">
                          <Clock className="w-3 h-3 mr-1" />
                          {post.date}
